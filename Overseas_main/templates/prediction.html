@@ -1,0 +1,91 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    <title>Flight Price Prediction</title>
+
+    <!-- BootStrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static 'css/predict.css' %}">
+
+    <!-- Google Chart -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        //alert({{data|safe}})
+        var data = google.visualization.arrayToDataTable([
+            ['Time', 'Price'],
+            {% for datum in data %}
+            {{ datum|safe }},
+            {% endfor %}
+        ]);
+
+        var options = {
+          title: 'Expected price graph',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
+    
+</head>
+
+<body>
+
+    <!-- As a heading -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header" style="margin:auto">
+                
+                <a class="navbar-brand" href="/" style=" width: 50px; margin:auto">FLIGHT PRICE</a>
+                
+            </div>
+        </div>
+    </nav>
+
+    <br><br><br>
+        <br>
+        <br>
+
+        <h3>Your predicted flight price is</h3>
+        <h3>Rs.{{ pred }}</h3>
+        
+        
+        
+
+        <br>
+        <br>    
+            <div id="curve_chart" style="width: 900px; height: 500px; margin: auto;"></div>
+        <br>
+        <br> 
+        <h3>The optimal time for purchasing tickets is in the month of</h3>
+        <h1>{{target_month}}</h1>
+        <br>
+        <br> 
+        <p>© Team 19</p>
+
+    </div>
+
+
+</body>
+
+</html>
+
+
+<!-- var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales'],
+          ['2004',  1000],
+          ['2005',  1170],
+          ['2006',  660],
+          ['2007',  1030]
+        ]); -->
